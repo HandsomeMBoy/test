@@ -1,0 +1,123 @@
+笔记编辑者：毛健     编辑时间：2016.6.6   更新时间： 2016.8.10
+
+1.0.插入单条数据
+insert into表名(列名1,列名2,列名..) values(值1,值2,值...); 
+insert into product(name, price, pic_path) values('Nike',500,'uploads/3245.jpg');
+1.1.插入多条数据
+insert into product(name, price, pic_path) values('Nike',500,'uploads/3245.jpg'),('Adidas',800,'uploads/3265.jpg'),('LiNing',300,'uploads/3455.jpg');
+
+2.更新数据
+update 表名 set列名1=值1,列名2=值2[where条件]; 
+update product set name='LiNing', price=50 where id=2; 
+
+ // 需要更新的数据
+    $data['email'] = 'Jack@163.com';
+    // 更新的条件
+    $condition['username'] = 'Jack';
+    $result = $Dao->where($condition)->save($data);
+    //或者：$resul t= $Dao->where($condition)->data($data)->save();在sql语句中用save()方法为了保证数据库的安全，避免出错更新整个数据表，如果没有任何更新条件，数据对象本身也不包含主键字段的话，save方法不会更新任何数据库的记录。
+
+3.删除数据
+delete from表名[where条件]; 
+delete from product where id=2;(一般的数据删除的条件都是用id删除整条数据)
+
+4.查询所有数据 
+select * from 表名;
+select * from product;(*号表示所有的全部的意思)
+
+5.查询部份列
+select列名1,列名2,列名N from 表名;
+select name, price from product;（这个是查询整条数据的某些字段）
+
+6.条件查询
+# 比较 =, <, >, <=, >=, != 
+select*from表名where列名=值;
+select*from product where id=2;
+
+# and 与 select*from表名where条件1and条件2and条件N; 
+select*from product where name='Nike'and price=50;
+
+# or 或 
+select*from表名where条件1or条件2or条件N;
+select*from product where name='Nike'or price>50; 
+
+# not 非 
+select*from表名wherenot条件1;
+select*from product wherenot name='Nike'; 
+
+#in 枚举 
+select*from表名where列名in(值1,值2,值N); 
+select*from product where id in(2,3,4,10); 
+select*from product where id notin(2,3,4,10); 
+
+#like 模糊查询 
+select*from表名where列名 like '%值%'; 
+select*from product where name like '%Li%'; 
+
+#between...and... 范围查询 
+select*from表名where列名 between 值and值; 
+select*from order where created between '2010-01-01'and'2011-01-01';
+
+7.查询排序
+select*from表名 order by列名排序方式;
+#排序方式: asc(升序，默认)，desc(降序) 
+select*from product order by created desc;
+
+8.限制查询结果数量
+select*from表名 limit 开始记录数,结果数量;select*from product limit 5;
+select*from product limit 2,5;
+
+9.聚合函数
+# count 总记录数 
+select count(列名)from student; 
+select count(id)from student; 
+
+# sum 总共 
+select sum(列名)from student; 
+select sum(age)from student; 
+
+# avg 平均值 
+select avg(列名)from student;
+select avg(age)as avg_age from student; 
+
+# max 最大值 
+select max(列名)from student; 
+select max(age)from student; 
+
+# min 最小值 
+select min(列名)from student; 
+select min(age)from student;
+
+10.子查询
+select name from student where age<(select avg(age)from student ); 
+select*from product where id in(select id from order );
+
+11.连接查询
+select s.username as stu_name, t.name as te_name from student s, teacher t where s.teacher_id=t.id;
+
+12.联表查询
+select [需要查询的字段] from [设置名] as [定义名字] left join B as b on [两个表的关联条件] where [查询条件];
+select a.*,b.* from A as a left join B as b on a.id = b.id where a.name='lilei' and b.age=27 order by a.id group by a.class limit 10 ;
+
+
+###sql的大数据处理（超过十万条数据）看截图   看例子
+
+SELECT id,product_id,COUNT(product_id) sums FROM `ims_ewei_shop_goods` where deleted = 0 GROUP BY product_id HAVING sums>1;
+
+
+UPDATE `ims_ewei_shop_goods` SET deleted =1 WHERE id NOT IN(
+	SELECT a.id FROM ( SELECT MAX(id) id,product_id,COUNT(product_id) sums FROM `ims_ewei_shop_goods` GROUP BY product_id ) a
+)
+
+SELECT * FROM `ims_ewei_shop_goods` WHERE deleted =1;
+
+
+会员数据
+
+SELECT MIN(id) id,openid,COUNT(openid) sums  FROM `ims_member` where status>=0 GROUP BY openid HAVING sums >1;
+
+SELECT id,openid FROM `ims_member` where status=-1;
+
+UPDATE `ims_member` SET status =-1 WHERE id IN(
+	SELECT a.id FROM (SELECT MAX(id) id,COUNT(openid) nums FROM `ims_member` where status>=0 GROUP BY openid HAVING nums>1)a
+)

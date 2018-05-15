@@ -1,0 +1,70 @@
+
+
+PHPExcel占用内存过大
+
+
+
+//创建一个处理对象实例
+    $cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_discISAM;
+    $cacheSettings = array();
+    PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+
+    $objPHPExcel = new PHPExcel();
+
+setCacheStorageMethod()方法会返回一个BOOL型变量用于表示是否成功设置（比如，如果APC不能使用的时候，你设置使用APC 缓存，将会返回false）。每一个worksheet都会有一个独立的缓存，当一个worksheet实例化时，就会根据设置或配置的缓存方式来自动创 建。一旦你开始读取一个文件或者你已经创建了第一个worksheet，就不能在改变缓存的方式了。目前，有以下几种缓存方式可以使用：
+1). PHPExcel_CachedObjectStorageFactory::cache_in_memory;
+
+      默认情况下，如果你不初始化任何缓存方式，PHPExcel将使用内存缓存的方式。
+
+2).PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized; 
+
+     使用这种缓存方式，单元格会以序列化的方式保存在内存中，这是降低内存使用率性能比较高的一种方案。
+
+3). PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
+
+     与序列化的方式类似，这种方法在序列化之后，又进行gzip压缩之后再放入内存中，这回跟进一步降低内存的使用，但是读取和写入时会有一些慢。
+
+4). PHPExcel_CachedObjectStorageFactory::cache_to_discISAM;
+
+      当使用cache_to_discISAM这种方式时，所有的单元格将会保存在一个临时的磁盘文件中，只把他们的在文件中的位置保存在PHP的内存中，这 会比任何一种缓存在内存中的方式都慢，但是能显著的降低内存的使用。临时磁盘文件在脚本运行结束是会自动删除。
+
+5). PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
+
+      类似cache_to_discISAM这种方式，使用cache_to_phpTemp时，所有的单元格会还存在php://temp I/O流中，只把他们的位置保存在PHP的内存中。PHP的php://memory包裹器将数据保存在内存中，php://temp的行为类似，但是当 存储的数据大小超过内存限制时，会将数据保存在临时文件中，默认的大小是1MB，但是你可以在初始化时修改它:
+
+  PHPExcel是一个很强大的处理Excel的PHP开源类，但是很大的一个问题就是它占用内存太大，从1.7.3开始，它支持设置cell的缓存方式，但是推荐使用目前稳定的版本1.7.6，因为之前的版本都会不同程度的存在bug。
+       官网上是这么说的：PHPExcel平均下来使用1k/单元格的内存，因此大的文档会导致内存消耗的也很快。单元格缓存机制能够允许PHPExcel将内 存中的小的单元格对象缓存在磁盘或者APC，memcache或者Wincache中，尽管会在读取数据上消耗一些时间，但是能够帮助你降低内存的消耗。 默认情况下，PHPExcel依然将单元格对象保存在内存中，但是你可以自定义。你可以使用 PHPExcel_Settings::setCacheStorageMethod()方法，将缓存方式作为参数传递给这个方法来设置缓存的方式。
+
+
+
+<?  
+$cacheMethod = PHPExcel_CachedObjectStorageFactory:: cache_to_phpTemp;      
+$cacheSettings = array( ' memoryCacheSize ' => '8MB' );      
+PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);  
+      php://temp文件在脚本结束是会自动删除。 
+
+6). PHPExcel_CachedObjectStorageFactory::cache_to_apc;
+
+      当使用cach_to_apc时，单元格保存在APC中，只在内存中保存索引。APC缓存默认超时时间时600秒，对绝大多数应用是足够了，当然你也可以在初始化时进行修改：
+
+[php] 
+<？  
+$cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_APC;      
+$cacheSettings = array( 'cacheTime' => 600 );      
+PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);   
+当脚本运行结束时，所有的数据都会从APC中清楚（忽略缓存时间），不能使用此机制作为持久缓存。
+
+7).PHPExcel_CachedObjectStorageFactory::cache_to_memcache
+
+     使用cache_to_memory时，单元格对象保存在memcache中，只在内存中保存索引。默认情况下，PHPExcel会在 localhost和端口11211寻找memcache服务，超时时间600秒，如果你在其他服务器或其他端口运行memcache服务，可以在初始化 时进行修改：
+
+[php] 
+<?  
+$cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_memcache;      
+$cacheSettings = array( 'memcacheServer'=> 'localhost',      
+                        'memcachePort' => 11211,      
+                        'cacheTime' => 600 );       
+PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);   
+    从初始化设置的形式上看，MS还不支持多台memcache服务器轮询的方式，比较遗憾。
+
+    当脚本结束时，所有的数据都会从memcache清空（忽略缓存时间），不能使用该机制进行持久存储。

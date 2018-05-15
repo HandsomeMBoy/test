@@ -1,0 +1,289 @@
+笔记编辑者：毛健     编辑时间：2016.9.19
+
+
+/***************************图片适配代码*****************************/
+<div class="good" data-goodsid='<%g.id%>'>
+        
+        <div class='img'><img onload= 'onloadShopImage(this)' onerror='onloadShopImageError(this)' src="<%g.thumb%>"></div>
+       
+</div>
+
+<script type="text/javascript">
+//图片显示的自动适配
+function onloadShopImageError(thisimgs){
+	thisimgjquery = $(thisimgs);
+	var pWidth =  thisimgjquery .parent().width();
+	var pHeight = pWidth;
+	thisimgjquery.parent().css("position",'relative');
+	 
+	thisimgjquery.parent().css("width",pWidth);
+	thisimgjquery.parent().css("height",pHeight);
+}
+
+
+//获取图片父级框的高度然后处理原图
+function onloadShopImageResize(thisimgjquery){
+	
+	var pWidth  =  thisimgjquery .parent().width();
+	var pHeight = pWidth;
+
+	thisimgjquery.parent().css("position",'relative');
+	 
+	thisimgjquery.parent().css("width",pWidth);
+	thisimgjquery.parent().css("height",pHeight);
+	 
+	//获取图片原始高度
+	var thisimg = thisimgjquery.get(0);
+	var naturalWidth = thisimg .naturalWidth;
+	var naturalHeight = thisimg .naturalHeight;
+	if(naturalWidth<=0){
+		return;
+	}
+	
+	//获得压缩比例
+	var scalex=pWidth/naturalWidth;
+	var scaley=pHeight/naturalHeight;
+
+//	var scale = Math.min(scalex,scaley,1);
+	var scale = Math.min(scalex,scaley);
+
+	//console.log(scale);
+	//如果scale大于1  表示原始图片小于父级宽高,则不缩放直接定位
+/*	if(scale>1){
+		var finalWidth = naturalWidth;
+		var finalHeight = naturalHeight;
+		thisimg.style.position="absolute";
+	 	alert(finalWidth+"_"+finalHeight);
+		thisimg.style.width = finalWidth+"px";
+		thisimg.style.height = finalHeight+"px";
+	}else{
+		var finalWidth = naturalWidth*scale;
+		var finalHeight = naturalHeight*scale;
+		thisimg.style.position="absolute";
+	 	alert(finalWidth+"_"+finalHeight);
+		thisimg.style.width = finalWidth+"px";
+		thisimg.style.height = finalHeight+"px";
+	}*/
+	var finalWidth = naturalWidth*scale;
+	var finalHeight = naturalHeight*scale;
+	thisimg.style.position="absolute";
+// 	alert(finalWidth+"_"+finalHeight);
+	thisimg.style.width = finalWidth+"px";
+	thisimg.style.height = finalHeight+"px";
+	
+	thisimg.style.top=(pHeight-finalHeight)/2+"px";
+	thisimg.style.left=(pWidth-finalWidth)/2+"px";
+	
+	
+	
+}
+function onloadShopImage(thisimg){
+	onloadShopImageResize($(thisimg));
+}
+
+
+$(window).resize(function() {
+	
+	$s = $(".img > img");
+	
+	$s.each(function( ){
+		onloadShopImageResize($(this));
+		
+	})
+});
+
+
+</script>
+/******************************************************************/
+2017.10.26
+
+//现阶段比较流行的无刷新分页：思路，在正常分页的情况下，在js调分页用上将程序稍做修改。建立一个子分页数据
+例如：后台查询一次分页100条数据，每当浏览到80条时候调用分页接口查出数据就可以无限浏览下去不用等待分页加载。
+
+
+//php后台程序
+ public function  getgoods() {
+
+        $page = input('page') ? input('page') : 1;
+        $pagesize = input('pagesize') ? input('pagesize') : '6';
+        $pagesize=100;
+        $goods = Db::name('goods')->limit(($page-1)*$pagesize.",".$pagesize)->select();
+    
+        $total = Db::name('goods')->where($condition)->count();
+    
+        $data = array('list'=>$goods,'total'=>$total,'offset'=> $page * $pagesize);
+        $return = array('code'=>1,'data'=>$data);
+        echo json_encode($return);exit;
+    }
+
+
+//调用自动加载的方法
+	var jzdata = {
+		moreURL : jiekouhost + "mobile/homepage/getgoods",
+		postdata :{ticket:ticket,type:1,isrecommand:1} ,
+		page : 0,
+		ismax : false,//是否已经加载到最后一页
+		isLoadding : false//是否正在加载
+
+	}
+ 	AotuPaging1(jzdata);
+
+
+//封装方法
+function AotuPaging1(data) {
+    var moreURL = data.moreURL;//接口地址
+
+    perPage = data.perPage;//页面上每次显示的条数
+    if(!perPage) perPage = 20;//每次显示20条
+
+    displayPage = data.displayPage;//页面上的执行页数
+    if(!displayPage) displayPage=1;
+
+    page = data.page;//请求的分页的页数
+    if(!page) page=1;
+
+    dataPerPage = data.dataPerPage;
+    if(!dataPerPage)dataPerPage=100;//每次请求后的分页数据
+
+    var postdata = data.postdata;
+    var ismax = data.ismax;
+    var isLoadding = data.isLoadding;
+    var isExpired = false;
+    
+    data.dataList=[];
+    
+    
+    
+    function loadMore() {
+    	
+    	var currentData = getLoadCacheData();//获取缓存数据
+    	
+    	var leftCounts = getLeftLoadCacheData();//获取缓存数据剩余量
+    	if(currentData.length){
+    		 ret_method(currentData);//替换前段数据
+    		 displayPage++;
+    	}
+    	
+	//当浏览请求分页数据百分之六十后执行下一页请求
+    	if(leftCounts< dataPerPage*0.6) {
+    		
+	    	if(!isLoadding){
+	    		loadDataMore();//执行下一个分页
+	    	}else{
+	    		isExpired = true;
+	    	}
+    	}
+    	
+    }
+    
+    function getLeftLoadCacheData(){
+ 	   //计算缓存数据剩余量
+	    var leftCount = data.dataList.length - (displayPage)*perPage;
+	    if(leftCount<0) leftCount=0;
+	    	return leftCount;
+    }
+
+//取出每次页面上显示的数据
+    function getLoadCacheData(){
+	
+    	var datac = [];
+    	for(var i=0;i<data.dataList.length;i++){
+    		
+    		if(i<(displayPage-1)*perPage) continue;
+    		//大于当前下一页时停止
+		if(i>(displayPage)*perPage) break;
+    		
+		//找出当前也显示的数据
+	    	if(i>(displayPage-1)*perPage){
+	    		//找出每次页面分页显示出来的数据拼接
+	    		datac.push(data.dataList[i])
+	    	}
+
+    	}
+    	return datac;
+    }
+    
+//调用请求分页数据和处理
+    function loadDataMore() {
+        if (isLoadding) return;
+        if (ismax) return;
+        page++;
+        isLoadding = true;
+        $("#loadTip").animate({
+            height: "40px"
+        }, function() {
+            $("#loadTip").text("正在加载中")
+        });
+        $("#loadTip").show();
+        setTimeout(function() {
+            postdata.page = page;
+            postdata.string = string(postdata);
+            $.ajax({
+                type: "post",
+                url: moreURL,
+                data: postdata,
+                dataType: 'json',
+                success: function(ret) {
+                    if (ret.code == -1) {
+                        re_login(ret)
+                    } else if (ret.code == 1) {
+                       // ret_method(ret);
+
+                    	//连接分页数值
+                    	data.dataList=data.dataList.concat(ret.data.list);
+                    	 checkLoadMore();
+                        isLoadding = false;
+                        if (ret.data.offset >= ret.data.total) {
+                            ismax = true;
+                            $("#loadTip").text("没有更多");
+                            setTimeout(function() {
+                                $("#loadTip").text("");
+                                isLoadding = false;
+                                $("#loadTip").animate({
+                                    height: "0px"
+                                }, function() {})
+                            }, 1000)
+                        } else {
+                            $("#loadTip").text("");
+                            $("#loadTip").animate({
+                                height: "0px"
+                            }, function() {})
+                        }
+                    } else if (ret.code == 0) {
+                        ret_error(ret);
+                        $("#loadTip").text("");
+                        $("#loadTip").animate({
+                            height: "0px"
+                        }, function() {})
+                    }
+                },
+                error: function(ret) {
+                    $("#loadTip").text("");
+                    $("#loadTip").animate({
+                        height: "0px"
+                    }, function() {});
+                    isLoadding = false;
+                    page--
+                }
+            })
+        }, 800)
+    }
+
+//滑动到屏幕底部自动加载分页
+    function checkLoadMore() {
+        if ($(document).scrollTop() + $(window).height() > $(document).height() - 8) {
+            loadMore()
+        }
+    }
+    $(function() {
+        $(window).on('scroll', function() {
+            checkLoadMore()
+        });
+        checkLoadMore()
+    })
+
+}
+
+
+
+
