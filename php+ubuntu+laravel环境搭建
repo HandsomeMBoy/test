@@ -1,1 +1,26 @@
+一.首先先在本地安装一下软件：
+  1）. vagrant 2.0.1 
+  2）. virtualbox-5.2.0 （虚拟机）
+  3）. git 版本管理器
+  4）. Postman(接口测试)
+  5）. pc版微信 
+  6）. 开发软件/远程连接工具/浏览器等（依据个人习惯和喜好
+  
+二.创建虚拟机然后通过ssh连接虚拟机
+  1.安装好php和apache后开启服务
+  2.然后创建一个开发的文件夹如：WWW   在该路径执行cmd   运行vagrant up 命令   
+（mac系统的话直接在终端里cd到你的项目路径执行命令 如果执行不了 用sudo vagrant up）
 
+如果出现报错
+vagrant up报错 Warning: Authentication failure. Retrying…
+
+解决方案：
+在Vagrantfile配置文件中添加了两行代码，使用明文用户名密码
+config.ssh.username = “vagrant”
+config.ssh.password = “vagrant”
+保存
+vagrant reload
+
+  3.然后连接虚拟机 ssh vagrant@127.0.0.1 -p 2222   密码：vagrant（默认）
+
+三.在虚拟机上面搭lamp环境 通过git拉去和push项目文件，数据库等 （lavarel框架等使用环境+ubuntu系统）
