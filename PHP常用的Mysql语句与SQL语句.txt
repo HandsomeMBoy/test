@@ -1,106 +1,110 @@
-±Ê¼Ç±à¼­Õß£ºÃ«½¡     ±à¼­Ê±¼ä£º2016.6.6   ¸üĞÂÊ±¼ä£º 2016.8.10
+ç¬”è®°ç¼–è¾‘è€…ï¼šæ¯›å¥     ç¼–è¾‘æ—¶é—´ï¼š2016.6.6   æ›´æ–°æ—¶é—´ï¼š 2016.8.10
 
-1.0.²åÈëµ¥ÌõÊı¾İ
-insert into±íÃû(ÁĞÃû1,ÁĞÃû2,ÁĞÃû..) values(Öµ1,Öµ2,Öµ...); 
+1.0.æ’å…¥å•æ¡æ•°æ®
+insert intoè¡¨å(åˆ—å1,åˆ—å2,åˆ—å..) values(å€¼1,å€¼2,å€¼...); 
 insert into product(name, price, pic_path) values('Nike',500,'uploads/3245.jpg');
-1.1.²åÈë¶àÌõÊı¾İ
+1.1.æ’å…¥å¤šæ¡æ•°æ®
 insert into product(name, price, pic_path) values('Nike',500,'uploads/3245.jpg'),('Adidas',800,'uploads/3265.jpg'),('LiNing',300,'uploads/3455.jpg');
 
-2.¸üĞÂÊı¾İ
-update ±íÃû setÁĞÃû1=Öµ1,ÁĞÃû2=Öµ2[whereÌõ¼ş]; 
+2.æ›´æ–°æ•°æ®
+update è¡¨å setåˆ—å1=å€¼1,åˆ—å2=å€¼2[whereæ¡ä»¶]; 
 update product set name='LiNing', price=50 where id=2; 
 
- // ĞèÒª¸üĞÂµÄÊı¾İ
+ // éœ€è¦æ›´æ–°çš„æ•°æ®
     $data['email'] = 'Jack@163.com';
-    // ¸üĞÂµÄÌõ¼ş
+    // æ›´æ–°çš„æ¡ä»¶
     $condition['username'] = 'Jack';
     $result = $Dao->where($condition)->save($data);
-    //»òÕß£º$resul t= $Dao->where($condition)->data($data)->save();ÔÚsqlÓï¾äÖĞÓÃsave()·½·¨ÎªÁË±£Ö¤Êı¾İ¿âµÄ°²È«£¬±ÜÃâ³ö´í¸üĞÂÕû¸öÊı¾İ±í£¬Èç¹ûÃ»ÓĞÈÎºÎ¸üĞÂÌõ¼ş£¬Êı¾İ¶ÔÏó±¾ÉíÒ²²»°üº¬Ö÷¼ü×Ö¶ÎµÄ»°£¬save·½·¨²»»á¸üĞÂÈÎºÎÊı¾İ¿âµÄ¼ÇÂ¼¡£
+    //æˆ–è€…ï¼š$resul t= $Dao->where($condition)->data($data)->save();åœ¨sqlè¯­å¥ä¸­ç”¨save()æ–¹æ³•ä¸ºäº†ä¿è¯æ•°æ®åº“çš„å®‰å…¨ï¼Œé¿å…å‡ºé”™æ›´æ–°æ•´ä¸ªæ•°æ®è¡¨ï¼Œå¦‚æœæ²¡æœ‰ä»»ä½•æ›´æ–°æ¡ä»¶ï¼Œæ•°æ®å¯¹è±¡æœ¬èº«ä¹Ÿä¸åŒ…å«ä¸»é”®å­—æ®µçš„è¯ï¼Œsaveæ–¹æ³•ä¸ä¼šæ›´æ–°ä»»ä½•æ•°æ®åº“çš„è®°å½•ã€‚
 
-3.É¾³ıÊı¾İ
-delete from±íÃû[whereÌõ¼ş]; 
-delete from product where id=2;(Ò»°ãµÄÊı¾İÉ¾³ıµÄÌõ¼ş¶¼ÊÇÓÃidÉ¾³ıÕûÌõÊı¾İ)
+3.åˆ é™¤æ•°æ®
+delete fromè¡¨å[whereæ¡ä»¶]; 
+delete from product where id=2;(ä¸€èˆ¬çš„æ•°æ®åˆ é™¤çš„æ¡ä»¶éƒ½æ˜¯ç”¨idåˆ é™¤æ•´æ¡æ•°æ®)
 
-4.²éÑ¯ËùÓĞÊı¾İ 
-select * from ±íÃû;
-select * from product;(*ºÅ±íÊ¾ËùÓĞµÄÈ«²¿µÄÒâË¼)
+4.æŸ¥è¯¢æ‰€æœ‰æ•°æ® 
+select * from è¡¨å;
+select * from product;(*å·è¡¨ç¤ºæ‰€æœ‰çš„å…¨éƒ¨çš„æ„æ€)
 
-5.²éÑ¯²¿·İÁĞ
-selectÁĞÃû1,ÁĞÃû2,ÁĞÃûN from ±íÃû;
-select name, price from product;£¨Õâ¸öÊÇ²éÑ¯ÕûÌõÊı¾İµÄÄ³Ğ©×Ö¶Î£©
+5.æŸ¥è¯¢éƒ¨ä»½åˆ—
+selectåˆ—å1,åˆ—å2,åˆ—åN from è¡¨å;
+select name, price from product;ï¼ˆè¿™ä¸ªæ˜¯æŸ¥è¯¢æ•´æ¡æ•°æ®çš„æŸäº›å­—æ®µï¼‰
 
-6.Ìõ¼ş²éÑ¯
-# ±È½Ï =, <, >, <=, >=, != 
-select*from±íÃûwhereÁĞÃû=Öµ;
+6.æ¡ä»¶æŸ¥è¯¢
+# æ¯”è¾ƒ =, <, >, <=, >=, != 
+select*fromè¡¨åwhereåˆ—å=å€¼;
 select*from product where id=2;
 
-# and Óë select*from±íÃûwhereÌõ¼ş1andÌõ¼ş2andÌõ¼şN; 
+# and ä¸ select*fromè¡¨åwhereæ¡ä»¶1andæ¡ä»¶2andæ¡ä»¶N; 
 select*from product where name='Nike'and price=50;
 
-# or »ò 
-select*from±íÃûwhereÌõ¼ş1orÌõ¼ş2orÌõ¼şN;
+# or æˆ– 
+select*fromè¡¨åwhereæ¡ä»¶1oræ¡ä»¶2oræ¡ä»¶N;
 select*from product where name='Nike'or price>50; 
 
-# not ·Ç 
-select*from±íÃûwherenotÌõ¼ş1;
+# not é 
+select*fromè¡¨åwherenotæ¡ä»¶1;
 select*from product wherenot name='Nike'; 
 
-#in Ã¶¾Ù 
-select*from±íÃûwhereÁĞÃûin(Öµ1,Öµ2,ÖµN); 
+#in æšä¸¾ 
+select*fromè¡¨åwhereåˆ—åin(å€¼1,å€¼2,å€¼N); 
 select*from product where id in(2,3,4,10); 
 select*from product where id notin(2,3,4,10); 
 
-#like Ä£ºı²éÑ¯ 
-select*from±íÃûwhereÁĞÃû like '%Öµ%'; 
+#like æ¨¡ç³ŠæŸ¥è¯¢ 
+select*fromè¡¨åwhereåˆ—å like '%å€¼%'; 
 select*from product where name like '%Li%'; 
 
-#between...and... ·¶Î§²éÑ¯ 
-select*from±íÃûwhereÁĞÃû between ÖµandÖµ; 
+#between...and... èŒƒå›´æŸ¥è¯¢ 
+select*fromè¡¨åwhereåˆ—å between å€¼andå€¼; 
 select*from order where created between '2010-01-01'and'2011-01-01';
 
-7.²éÑ¯ÅÅĞò
-select*from±íÃû order byÁĞÃûÅÅĞò·½Ê½;
-#ÅÅĞò·½Ê½: asc(ÉıĞò£¬Ä¬ÈÏ)£¬desc(½µĞò) 
+7.æŸ¥è¯¢æ’åº
+select*fromè¡¨å order byåˆ—åæ’åºæ–¹å¼;
+#æ’åºæ–¹å¼: asc(å‡åºï¼Œé»˜è®¤)ï¼Œdesc(é™åº) 
 select*from product order by created desc;
 
-8.ÏŞÖÆ²éÑ¯½á¹ûÊıÁ¿
-select*from±íÃû limit ¿ªÊ¼¼ÇÂ¼Êı,½á¹ûÊıÁ¿;select*from product limit 5;
+8.é™åˆ¶æŸ¥è¯¢ç»“æœæ•°é‡
+select*fromè¡¨å limit å¼€å§‹è®°å½•æ•°,ç»“æœæ•°é‡;select*from product limit 5;
 select*from product limit 2,5;
 
-9.¾ÛºÏº¯Êı
-# count ×Ü¼ÇÂ¼Êı 
-select count(ÁĞÃû)from student; 
+9.èšåˆå‡½æ•°
+# count æ€»è®°å½•æ•° 
+select count(åˆ—å)from student; 
 select count(id)from student; 
 
-# sum ×Ü¹² 
-select sum(ÁĞÃû)from student; 
+# sum æ€»å…± 
+select sum(åˆ—å)from student; 
 select sum(age)from student; 
 
-# avg Æ½¾ùÖµ 
-select avg(ÁĞÃû)from student;
+# avg å¹³å‡å€¼ 
+select avg(åˆ—å)from student;
 select avg(age)as avg_age from student; 
 
-# max ×î´óÖµ 
-select max(ÁĞÃû)from student; 
+# max æœ€å¤§å€¼ 
+select max(åˆ—å)from student; 
 select max(age)from student; 
 
-# min ×îĞ¡Öµ 
-select min(ÁĞÃû)from student; 
+# min æœ€å°å€¼ 
+select min(åˆ—å)from student; 
 select min(age)from student;
 
-10.×Ó²éÑ¯
+10.å­æŸ¥è¯¢
 select name from student where age<(select avg(age)from student ); 
 select*from product where id in(select id from order );
 
-11.Á¬½Ó²éÑ¯
+11.è¿æ¥æŸ¥è¯¢
 select s.username as stu_name, t.name as te_name from student s, teacher t where s.teacher_id=t.id;
 
-12.Áª±í²éÑ¯
-select [ĞèÒª²éÑ¯µÄ×Ö¶Î] from [ÉèÖÃÃû] as [¶¨ÒåÃû×Ö] left join B as b on [Á½¸ö±íµÄ¹ØÁªÌõ¼ş] where [²éÑ¯Ìõ¼ş];
+12.è”è¡¨æŸ¥è¯¢
+--æ˜¾å¼è¿æ¥
+select [éœ€è¦æŸ¥è¯¢çš„å­—æ®µ] from [è®¾ç½®å] as [å®šä¹‰åå­—] left join B as b on [ä¸¤ä¸ªè¡¨çš„å…³è”æ¡ä»¶] where [æŸ¥è¯¢æ¡ä»¶];
 select a.*,b.* from A as a left join B as b on a.id = b.id where a.name='lilei' and b.age=27 order by a.id group by a.class limit 10 ;
 
+--éšå¼è¿æ¥
 
-###sqlµÄ´óÊı¾İ´¦Àí£¨³¬¹ıÊ®ÍòÌõÊı¾İ£©¿´½ØÍ¼   ¿´Àı×Ó
+
+
+###sqlçš„å¤§æ•°æ®å¤„ç†ï¼ˆè¶…è¿‡åä¸‡æ¡æ•°æ®ï¼‰çœ‹æˆªå›¾   çœ‹ä¾‹å­
 
 SELECT id,product_id,COUNT(product_id) sums FROM `ims_ewei_shop_goods` where deleted = 0 GROUP BY product_id HAVING sums>1;
 
@@ -112,7 +116,7 @@ UPDATE `ims_ewei_shop_goods` SET deleted =1 WHERE id NOT IN(
 SELECT * FROM `ims_ewei_shop_goods` WHERE deleted =1;
 
 
-»áÔ±Êı¾İ
+ä¼šå‘˜æ•°æ®
 
 SELECT MIN(id) id,openid,COUNT(openid) sums  FROM `ims_member` where status>=0 GROUP BY openid HAVING sums >1;
 
