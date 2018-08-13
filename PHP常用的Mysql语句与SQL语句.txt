@@ -100,8 +100,10 @@ select s.username as stu_name, t.name as te_name from student s, teacher t where
 select [需要查询的字段] from [设置名] as [定义名字] left join B as b on [两个表的关联条件] where [查询条件];
 select a.*,b.* from A as a left join B as b on a.id = b.id where a.name='lilei' and b.age=27 order by a.id group by a.class limit 10 ;
 
---隐式连接
+--隐式连接 笛卡尔积（交叉连接）
+select [需要查询的字段] from [设置名] as [定义名字],[设置名] as [定义名字] where [查询条件]
 
+两者性能需要测试，但是一般不建议使用，本人感觉第二种方法效率很慢。
 
 
 ###sql的大数据处理（超过十万条数据）看截图   看例子
