@@ -26,5 +26,5 @@ vagrant reload
 三.在虚拟机上面搭lamp环境 通过git拉去和push项目文件，数据库等 （lavarel框架等使用环境+ubuntu系统）
 
 lavarel框架在运行的时候会在storage文件里面生成缓存文件，这些文件在mac里面需要手动去修改下权限：
-偏好设置->共享文件->修改下读取权限就行了
-Package phpoffice/phpexcel is abandoned, you should avoid using it. Use phpoffice/phpspreadsheet instead.
+偏好设置->共享文件->点击共享文件->右边选择修改下读取权限就行了
+
