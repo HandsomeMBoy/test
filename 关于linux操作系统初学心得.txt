@@ -1,78 +1,94 @@
-�ʼǱ༭�ߣ�ë��     �༭ʱ�䣺2016.8.10
+笔记编辑者：毛健     编辑时间：2016.8.10
 
-һֱ������ʱ��ܺõ�ѧϰһ��linux������ѧϰ������һֱû�еĺúܶ�ʱ��ͻ����Լ�ȥѧϰ�������ҷ���������ܺ���ܶ๫˾������Ҫ�߱���
+一直都想找时间很好的学习一下linux操作的学习，但是一直没有的好很多时间和机会自己去学习，但是我发现这个技能好像很多公司都必须要具备。
 
-���н���պðѻ�������ˣ�������ʽ��ʼѧϰ����O(��_��)O����~
+所有今天刚好把环境搭好了，可以正式开始学习啦！O(∩_∩)O哈哈~
 
-��ѧϰlinux����֮ǰ�أ�����Ҫ���������¡�
+在学习linux操作之前呢，首先要做好两件事。
 
-1.��ȥѧϰһ��linux�Ļ�������չ��ʷ�ͱ�����ѧϰһ��linux�����Ĳ��������ס���߱�һ�¡�
+1.先去学习一下linux的基础，发展历史和背景，学习一下linux基本的操作命令记住或者背一下。
 
-2.����Ҫ�ѻ�����Ū�ã������˾û���ṩ��һ����ϰ��ƽ̨�Ļ�������Լ�ȥ�һ���Լ���Ļ�����
+2.首先要把环境给弄好，如果公司没有提供你一个练习的平台的话你可以自己去搭建一个自己玩的环境。
 
-����һ������� ���ٶ����кöࣩ����VMware Workstation Pro ,ϵͳ�Ĳ���ʲô�Ķ����԰ٶ������ĵ��ġ�
+先下一个虚拟机 （百度上有好多）比如VMware Workstation Pro ,系统的步骤什么的都可以百度搜索的到的。
 
-Ȼ��Ļ����Ǵ���һ������� linux ϵͳ�ġ��½�֮�󲢲��ܴ�ʹ�ã���Ϊ��Ҫ���ذ�װһ��linux���� iso�ļ�����ϵͳ��ʹ�á�
+然后的话就是创建一个虚拟机 linux 系统的。新建之后并不能打开使用，因为还要下载安装一个linux镜像 iso文件操作系统来使用。
 
 
 
-��������������֮������Ϳ����������ˣ���������ҳ�棨���õ���Ubuntu��
+完成了上面的两步之后基本就可以玩起来了，进入命令页面（我用的是Ubuntu）
 
-��Ubuntu��¼����ѡ���ʺţ���������
-����Ubuntu������
-������ϼ� ctrl + Alt + F2~F6
-���������н���
-�����¼�˻������룬�س�
-�ɹ���¼
-Ҫ��ص�������棬������ϼ� ctrl + Alt + F7
-�ɹ��ص�������档
+在Ubuntu登录界面选择帐号，输入密码
+进入Ubuntu主界面
+按下组合键 ctrl + Alt + F2~F6
+进入命令行界面
+输入登录账户与密码，回车
+成功登录
+要想回到桌面界面，按下组合键 ctrl + Alt + F7
+成功回到桌面界面。
 
-��������ҳ���Ϳ��԰���Щ��������ʵ�������ˡ�
+进入命令页面后就可以把那些命令用来实践和玩了。
 
 /********************/
-��ʼ���Ŀ��ʼ��Ҫ���������Ļ�������װ��php����+apache���ݿ���+���Ӻñ������������
+开始搭建项目开始需要搭好虚拟机的环境，安装好php环境+apache数据库插件+链接好本机和虚拟机。
 
-����������ͱ�������ֵ����⣺
-	1.����ǽ��������ܵ���������޷�ͨ���������ip�������������web������
-	�������رշ���ǽ��ip6�����Ϳ����ˡ�
+链接虚拟机和本机会出现的问题：
+	1.防火墙的问题可能导致浏览器无法通过虚拟机的ip来访问虚拟机的web服务器
+	处理：关闭防火墙和ip6重启就可以了。
 
 	
-linux�Ļ����������
+linux的基本操作命令：
+
+cd 文件路径
+top 查看服务器的运行后台程序
+
+chmod 修改文件和目录权限  
+chgrp 修改文件和目录用户组的权限
+
+-c或——changes：效果类似“-v”参数，但仅回报更改的部分；
+-f或--quite或——silent：不显示错误信息；
+-h或--no-dereference：只对符号连接的文件作修改，而不更改其他任何相关文件；
+-R或——recursive：递归处理，将指定目录下的所有文件及子目录一并处理；
+-v或——version：显示指令执行过程；
+--dereference：效果和“-h”参数相同；
+--help：在线帮助；
+--reference=<参考文件或目录>：把指定文件或目录的拥有者与所属群组全部设成和参考文件或目录的拥有者与所属群组相同；
+--version：显示版本信息。
 
 
 
 
 
-/*******************************CentOS 7�����������Լ������������Ͱ�IP������******************************************/
+/*******************************CentOS 7的网络配置以及设置主机名和绑定IP的问题******************************************/
 
 
-CentOS 7.0ϵͳ��һ�����µİ汾Ŷ���ܶ����Ѷ���֪��CentOS 7.0ϵͳ����ôȥ��װ���õ�Ŷ����Ϊcentos7.0����ǰ�汾���кܴ�ĸĽ�Ŷ��
+CentOS 7.0系统是一个很新的版本哦，很多朋友都不知道CentOS 7.0系统是怎么去安装配置的哦，因为centos7.0与以前版本是有很大的改进哦。
 
-˵������ֹĿǰCentOS 7.x���°汾ΪCentOS 7.0���������CentOS 7.0�ľ��尲װ���ù���
+说明：截止目前CentOS 7.x最新版本为CentOS 7.0，下面介绍CentOS 7.0的具体安装配置过程
 
-���찲װ��֮���Ҳ�֪��centosû�п��ӻ����档
+今天安装好之后我才知道centos没有可视化界面。
 
-�����¼����
+进入登录界面
 
-�˺�����root �س�
+账号输入root 回车
 
-�������������õ�root����س�
+再输入上面设置的root密码回车
 
-ϵͳ��¼�ɹ�
+系统登录成功
 
-����IP��ַ������DNS
+设置IP地址、网关DNS
 
-˵����CentOS 7.0Ĭ�ϰ�װ��֮����û���Զ������������ӵģ�
+说明：CentOS 7.0默认安装好之后是没有自动开启网络连接的！
 
-cd  /etc/sysconfig/network-scripts/  #�������������ļ�Ŀ¼
+cd  /etc/sysconfig/network-scripts/  #进入网络配置文件目录
 
-vi  ifcfg-eno16777736  #�༭�����ļ��������޸���������
+vi  ifcfg-eno16777736  #编辑配置文件，添加修改以下内容
 
 HWADDR=00:0C:29:8D:24:73
 
  TYPE=Ethernet 
 
-BOOTPROTO=static  #���þ�̬IP��ַ 
+BOOTPROTO=static  #启用静态IP地址 
 
 DEFROUTE=yes 
 
@@ -98,33 +114,33 @@ NAME=eno16777736
 
 UUID=ae0965e7-22b9-45aa-8ec9-3f0a20a85d11 
 
-ONBOOT=yes  #�����Զ������������� 
+ONBOOT=yes  #开启自动启用网络连接 
 
-IPADDR0=192.168.21.128  #����IP��ַ 
+IPADDR0=192.168.21.128  #设置IP地址 
 
-PREFIXO0=24  #������������ 
+PREFIXO0=24  #设置子网掩码 
 
-GATEWAY0=192.168.21.2  #�������� 
+GATEWAY0=192.168.21.2  #设置网关 
 
-DNS1=8.8.8.8  #������DNS 
+DNS1=8.8.8.8  #设置主DNS 
 
-DNS2=8.8.4.4  #���ñ�DNS 
+DNS2=8.8.4.4  #设置备DNS 
 
-:wq!  #�����˳� 
+:wq!  #保存退出 
 
-service network restart  #�������� 
+service network restart  #重启网络 
 
-ping www.linuxidc.com  #���������Ƿ�����
+ping www.linuxidc.com  #测试网络是否正常
 
-ip addr  #�鿴IP��ַ
+ip addr  #查看IP地址
 
-����������Ϊwww
-hostname  www  #����������Ϊwww
-vi /etc/hostname #�༭�����ļ�
-www  #�޸�localhost.localdomainΪwww
-:wq!  #�����˳�
-vi /etc/hosts #�༭�����ļ�
-127.0.0.1  localhost  www  #�޸�localhost.localdomainΪwww
-:wq!  #�����˳�
-shutdown -r now  #����ϵͳ
+设置主机名为www
+hostname  www  #设置主机名为www
+vi /etc/hostname #编辑配置文件
+www  #修改localhost.localdomain为www
+:wq!  #保存退出
+vi /etc/hosts #编辑配置文件
+127.0.0.1  localhost  www  #修改localhost.localdomain为www
+:wq!  #保存退出
+shutdown -r now  #重启系统
 /*************************************************************************/
