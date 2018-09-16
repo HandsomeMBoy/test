@@ -1,1 +1,43 @@
+使用git的基本步骤:
+一.安装好git 
+二.生成ssh-key 然后把公钥拷贝下来填写到git账号上面的setting/ssh 里面创建一个
+ssh-keygen -t rsa -C '18390239050@163.com'
+
+//如果已经有了一个账号连接了 需要修改文件名
+Enter file in which to save the key (/Users/Administrator/.ssh/id_rsa): id_rsa_two
+然后配置config 把id_rsa_two文件引用
+
+# 第一个账号，默认使用的账号
+Host github.com
+HostName github.com
+User git
+IdentityFile ~/.ssh/id_rsa
+# 第二个账号
+Host second.github.com  # second为前缀名，可以任意设置
+HostName github.com
+User git
+IdentityFile ~/.ssh/id_rsa_x
+
+三.然后连接本地和远程的步骤
+1.在计算机里面创建一个放文件的仓库，例如：E://www（下面以该文件为例）命令：mkdir www
+2.进入文件夹目录 cd www 
+3.如果文件夹没有内容需要手动新建一个内容
+echo '#test content' >> README.md
+指定该文件夹为git缓存仓库 git init
+git add . //把新增的东西添加到本地仓库
+git commit -m 'first commit' //提交到本地的git缓存区
+git push //向远程推送提交文件
+
+//第一次提交需要连接远程 再推送
+git remote add origin 远程git文件地址 https://github.com/用户名/项目名
+$ git remote rm origin //重建远程仓库地址 
+# 远程仓库地址，注意Host名称
+$ git remote add origin git@second.github.com:githubUserName/repName.git
+$ git remote -v # 查看远程
+git push -u origin master //推送到远程主分支
+
+//git 一些常用命令
+git push //向远程推送代码
+git pull //向远程拉取代码
+git status //查看修改的文件状态
 
