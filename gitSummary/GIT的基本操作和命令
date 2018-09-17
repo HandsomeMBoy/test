@@ -24,20 +24,21 @@ IdentityFile ~/.ssh/id_rsa_x
 3.如果文件夹没有内容需要手动新建一个内容
 echo '#test content' >> README.md
 指定该文件夹为git缓存仓库 git init
-git add . //把新增的东西添加到本地仓库
-git commit -m 'first commit' //提交到本地的git缓存区
-git push //向远程推送提交文件
+$git add . //把新增的东西添加到本地仓库
+$git commit -m 'first commit' //提交到本地的git缓存区
+$git push //向远程推送提交文件
 
 //第一次提交需要连接远程 再推送
-git remote add origin 远程git文件地址 https://github.com/用户名/项目名
-$ git remote rm origin //重建远程仓库地址 
+$git remote add origin 远程git文件地址 https://github.com/用户名/项目名
+$git remote rm origin //重建远程仓库地址 
 # 远程仓库地址，注意Host名称
-$ git remote add origin git@second.github.com:githubUserName/repName.git
-$ git remote -v # 查看远程
-git push -u origin master //推送到远程主分支
+$git remote add origin git@second.github.com:githubUserName/repName.git
+$git remote -v # 查看远程
+$git push -u origin master //推送到远程主分支
 
 //git 一些常用命令
-git push //向远程推送代码
-git pull //向远程拉取代码
-git status //查看修改的文件状态
+$git push //向远程推送代码
+$git pull //向远程拉取代码
+$git status //查看修改的文件状态
+$git log //查看提交日志
 
