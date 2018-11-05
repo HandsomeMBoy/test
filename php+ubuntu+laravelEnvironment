@@ -13,6 +13,8 @@
 
 如果出现报错
 vagrant up报错 Warning: Authentication failure. Retrying…
+运行到一般卡住不动了，检查一下是否开启了 cup的虚拟化支持（有些电脑系统的bios设置CPU里面）
+Configuratio > Intel Virtual Technology > Enabled
 
 解决方案：
 在Vagrantfile配置文件中添加了两行代码，使用明文用户名密码
