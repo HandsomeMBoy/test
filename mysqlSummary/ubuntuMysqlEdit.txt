@@ -1,0 +1,88 @@
+ubuntu系统下mysql重置密码和修改密码操作
+
+一、忘记密码后想重置密码
+
+在介绍修改密码之前，先介绍一个文件/etc/mysql/debian.cnf.其主要内容如下图：
+里面有一个debian-sys-maint用户，这个用户只有Debian或Ubuntu服务器才有，所以如果您的服务器是Debain或Ubuntu，debian-sys-maint是个Mysql安装之后自带的用户，具体作用是重启及运行mysql服务。所以如果忘了root密码，可以通过这个用户来重设密码。下面介绍具体操作：
+
+操作步骤
+1.进入/etc/mysql/目录，并用root权限打开debian.cnf文件
+> cd /etc/mysql
+> sudo vim debian.cnf
+查看user 和password
+
+
+2.使用这个文件中的用户名和密码进入mysql
+
+> mysql -u debian-sys-maint -p
+然后输入文件中的password值，即可进入mysql。
+
+3.选择mysql数据库（用户名和密码均存储在此数据库的user表中）
+> use mysql;
+
+4.显示user表中的列
+
+>show fields from user; 或者（describe user;）
+authentication_string这列就是密码（注：以前的版本这个字段是password,如果是password下面的操作将authentication_string替换成password即可）
+
+5.修改密码（修改密码为：123456）
+
+update mysql.user set authentication_string=password('123456') where user='root'
+
+6.退出
+
+>exit
+
+7.重启mysql
+
+service mysql restart
+
+
+
+二、修改密码
+
+1.查看mysqladmin命令
+
+> sudo mysqladmin
+password选项是用于修改密码的
+
+
+2. 修改密码
+
+> sudo mysqladmin -u root -p password
+写入新密码
+重新确认新密码
+
+3. 重启mysql服务
+
+> sudo service mysql restart
+
+
+三、修改port
+
+1.修改port
+
+> sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf
+
+修改mysqld.cnf文件里的port即可
+
+2.重启mysql服务
+
+> service msyql restart
+
+
+四、添加用户
+
+1.进入mysql
+
+> sudo mysql -u root -p
+
+输入密码，进入mysql
+
+2.添加用户
+
+> insert into mysql.user(Host,User,authentication_string) values("localhost","test",password("123456"));
+
+
+
+
