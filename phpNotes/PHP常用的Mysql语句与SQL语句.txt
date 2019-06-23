@@ -127,3 +127,20 @@ SELECT id,openid FROM `ims_member` where status=-1;
 UPDATE `ims_member` SET status =-1 WHERE id IN(
 	SELECT a.id FROM (SELECT MAX(id) id,COUNT(openid) nums FROM `ims_member` where status>=0 GROUP BY openid HAVING nums>1)a
 )
+
+mac配置本地apache域名步骤：
+第一步：在终端配置hosts文件
+cd /private/etc
+vim hosts  #127.0.0.1   www.test.com
+
+第二步：配置apache的httpd.conf
+cd /etc/apache2/
+sudo vim httpd.conf
+开启vhost扩展 Include /private/etc/apache2/extra/httpd-vhosts.conf
+Require all denied修改为 Require all granted
+
+第三步：配置apache访问域名的路径
+cd extra/
+sudo vim httpd.vhosts.conf
+
+
