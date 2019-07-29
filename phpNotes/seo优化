@@ -13,3 +13,27 @@
 
 分词软件心得：
 tp自带的Pscws4  分词不太准确，有些分词不被显示比如微信
+
+'URL_ROUTER_ON'         =>  true,   // 是否开启URL路由
+//正则路由设置
+'URL_ROUTE_RULES'=>array(
+    '/^sjyx\/(\d+)$/' 				=> array('Wap/Down/read?id=:1','',array('ext'=>'html')),
+    '/^sjyx\/list(\d+)$/' 			=> 'Wap/Cate/category_list?id=:1',        
+}
+
+//处理路由访问
+$req_url = $_SERVER['REQUEST_URI'];
+if(substr($req_url, -5, 5) == '.html'){
+    //ok
+}else{
+    if(substr($req_url, -1, 1) == '/' && substr($req_url, -6, 6) != '.html/'){
+        //ok
+    }else{
+        //return 404 page
+        header("HTTP/1.0 404 Not Found");
+        header("status: 404 not found");
+        $this->error("抱歉，没有找到您要找的页面!");
+        exit();
+    }
+}
+
