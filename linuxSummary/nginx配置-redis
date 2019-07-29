@@ -1,0 +1,41 @@
+1.下载php版本对应的redis版本
+2.下载php-redis扩展，并且去php.ini开启此扩展
+3.设置配置好redis.service.config的连接配置 或者默认本地配置
+
+4.php7.0版本以上的需要额外加一个igbinary扩展
+
+问题：
+redis-cli.exe -h 127.0.0.1 -p 6379
+redis读取的中文为乱码 在运行命令改为：redis-cli.exe --raw
+
+理解：
+list 类型相当于  一维数组
+添加数据 lpush name value 
+
+hash 类型相当于  多维数组
+
+如果php的phpinfo>0 需要在nginx里面配置重写规则
+nginx配置 
+server {
+        listen       80;
+        server_name  m.xinsu668.net;
+        root   "E:\WWW\xinsu668";
+        location / {
+		if (!-e $request_filename) {
+                    rewrite ^/index.php(.*)$ /index.php?s=$1 last;
+                    rewrite ^(.*)$ /index.php?s=$1 last;
+                      break;
+                }
+            index  index.html index.htm index.php;
+            #autoindex  on;
+        }
+        location ~ \.php(.*)$ {
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_index  index.php;
+            fastcgi_split_path_info  ^((?U).+\.php)(/?.+)$;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            fastcgi_param  PATH_INFO  $fastcgi_path_info;
+            fastcgi_param  PATH_TRANSLATED  $document_root$fastcgi_path_info;
+            include        fastcgi_params;
+        }
+}
