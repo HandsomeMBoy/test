@@ -1,0 +1,54 @@
+centOS 搭建lavarel环境步骤：
+1.确定已经安装了VirtualBox 虚拟机 然后配置Vagrantfile 配置访问端口
+ config.vm.network "forwarded_port", guest: 1111, host: 1111, host_ip: "127.0.0.1"
+ 启动连接虚拟机 vagrant up  ->  vagrant ssh
+ 
+2.创建一个项目文件并且设置好文件访问权限 chmod -R 777 文件名
+下载 composer / git / node.js / npm 等工具 命令请自行百度 
+然后去拉lavarel框架代码 ：git clone https://github.com/MaoJian555/laravel-shop.git testjob
+然后去 vim /etc/apache2/sites-available/000-default.conf 
+/**********************************/
+<VirtualHost *:1111>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /vagrant/gitStudy/myLavarelStudy/public
+        <Directory /vagrant/gitStudy/myLavarelStudy/public>
+                DirectoryIndex index.php
+                AllowOverride All
+                Require all granted
+        </Directory>
+</VirtualHost>
+/**********************************/
+
+开启端口：
+vim /etc/apache2/ports.conf 
+/**********************************/
+Listen 80
+Listen 1111
+
+<IfModule ssl_module>
+        Listen 443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+        Listen 443
+</IfModule>
+/**********************************/
+ 配置好后重启apache  /etc/init.d/apache2 restart
+
+3.接下来配置项目文件
+项目文件确定都有读写权限前提下
+安装期间会有一些php拓展缺少或者没有安装都报错 ，根据报错拓展安装php拓展
+composer install 安装composer 拓展插件
+composer update 安装之后再更新相关插件
+npm install 安装node.js相关插件会再框架里面生成一个node都相关文件夹 node_modules
+配置 .env.example   cp .env.example .env 备份一份再修改配置好数据连接
+
+4.然后可以使用播种进行数据库导入
+先再数据库建好库名
+然后绑定好 lavarel_key  运行 php artisan key:generate
+php artisan migrate:fresh --seed 进行数据库播种
+
+然后就可以浏览器访问拉！ http://127.0.0.1:1111  执行成功
+
+
+
