@@ -7,6 +7,10 @@ ssh-keygen -t rsa -C '18390239050@163.com'
 Hi MaoJian555! You've successfully authenticated, but GitHub does not provide shell access.
 说明成功
 
+设置账号 
+git config --global user.name 'MaoJian555'
+git config --global user.email '18390239050@163.com'
+
 //如果已经有了一个账号连接了 需要修改文件名
 Enter file in which to save the key (/Users/Administrator/.ssh/id_rsa): id_rsa_two
 然后配置config 把id_rsa_two文件引用
