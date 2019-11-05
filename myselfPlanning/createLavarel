@@ -50,5 +50,7 @@ php artisan migrate:fresh --seed 进行数据库播种
 
 然后就可以浏览器访问拉！ http://127.0.0.1:1111  执行成功
 
+遇到最多的问题：
+The Mix manifest does not exist
 
-
+解决没有node依赖包 npm install  || 先下载node.js
