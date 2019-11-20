@@ -30,3 +30,17 @@ vagrant reload
 lavarel框架在运行的时候会在storage文件里面生成缓存文件，这些文件在mac里面需要手动去修改下权限：
 偏好设置->共享文件->点击共享文件->右边选择修改下读取权限就行了
 
+安装lavarel框架后需要下载前端依赖包 node.js
+node -v ; npm -v  能执行说明成功
+composer install;安装依赖文件
+composer update;更新依赖文件
+有时候安装会有一些错误或lavarel无法正常访问
+error：The Mix manifest does not exist 
+修复 npm audit fix --force
+npm run dev
+还有可能插件版本不一致  需要根据报错信息来重装依赖版本
+example：peerDependencies WARNING sass-loader@^6.0.7 requires a peer of node-sass@^4.0.0 but none was install
+解决方案：
+重新安装node-sass和sass-loader:
+cnpm install node-sass --save-dev;
+cnpm install sass-loader --save-dev；
