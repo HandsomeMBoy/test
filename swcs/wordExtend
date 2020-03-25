@@ -1,0 +1,69 @@
+5. `int scws_add_dict(scws_t s, const char *fpath, int mode)` 添加词典文件到当前 scws 对象。
+
+   > **参数 fpath** 词典的文件路径，词典格式是 XDB或TXT 格式。  
+   > **参数 mode** 有3种值，分别为预定义的：
+   >
+   >   - SCWS_XDICT_TXT  表示要读取的词典文件是文本格式，可以和后2项结合用
+   >   - SCWS_XDICT_XDB  表示直接读取 xdb 文件
+   >   - SCWS_XDICT_MEM  表示将 xdb 文件全部加载到内存中，以 XTree 结构存放，可用异或结合另外2个使用。
+   >
+   >   具体用哪种方式需要根据自己的实际应用来决定。当使用本库做为守护进程时推荐使用 mem 方式，
+   >   当只是嵌入调用时应该使用 xdb 方式，将 xdb 文件加载进内存不仅占用了比较多的内存，
+   >   而且也需要一定的时间（35万条数据约需要0.3~0.5秒左右）。
+   >
+   > **返回值** 成功返回 0，失败返回 -1。  
+   > **注意** 若此前 scws 句柄已经加载过词典，则新加入的词典具有更高的优先权。
+ 
+
+ 
+
+测试环境：windows 2003 + php5.3.5 + apache2.2 + scws 1.1.9 
+
+自定义词库，words.txt 如下：
+
+腾讯    1.0    1.0    @
+C++    1.0    1.0    !
+中国人    1.0    1.0    !
+就是    1.0    1.0    !  
+1.每行由4个字段组成，依次为“词语"(由中文字或3个以下的字母合成), "TF", "IDF", "词性"， 字段之间用空格或制表符分开，数量不限 (注意，发现如果字段时间用空格隔开，然后用scws官方的php程序将txt词库转换xdb后，词库无效，但是txt词库有效，所以为了兼容性，字段之间最好仅用一个制表符分隔，且注意txt文件的编码要与程序要使用的编码一致)
+
+2.词性设为“!“，则表示该词设为无效，即使在其它核心库中存在该词也视为无效 
+ 
+
+ 
+
+使用自定义词库，需要注意加载词库代码的位置
+
+复制代码
+$txt = '我就是一个中国人,我是会C++语言,我有很多T恤衣服'; 
+$sh=scws_open();
+//注意，加载词库的代码放在此处无效，但是按照官方的例子应该是放在这里
+//scws_add_dict($sh, 'D:\Apache3W\words.txt', SCWS_XDICT_TXT);
+scws_send_text($sh, $txt);
+//加载词库的代码必须放在scws_send_text函之后才有效
+scws_add_dict($sh, 'D:\Apache3W\words.txt', SCWS_XDICT_TXT); 
+while ($words = scws_get_result($sh)) {
+    foreach ($words as $word)
+    {
+        var_dump($word);
+    }
+}
+scws_close($sh);
+复制代码
+如果非要将 scws_add_dict 放到 scws_send_text 前面 还可以这样写：
+
+复制代码
+$txt = '我就是一个中国人,我是会C++语言,我有很多T恤衣服';
+$sh=scws_open();
+//scws_set_dict也可以改为scws_add_dict 
+scws_set_dict($sh, 'D:\Program Files\scws\etc\dict.utf8.xdb', SCWS_XDICT_XDB);
+scws_add_dict($sh, 'D:\Apache3W\words.txt', SCWS_XDICT_TXT);
+scws_send_text($sh, $txt);
+while ($words = scws_get_result($sh)) {
+    foreach ($words as $word)
+    {
+        var_dump($word);
+    }
+}
+scws_close($sh);  
+复制代码
