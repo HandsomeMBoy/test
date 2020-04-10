@@ -7,6 +7,14 @@
 mount -t ext4 -o defaults /dev/sdb /root
 df -h 查看挂载情况
 
+重启自动挂载
+lsblk -f 查看磁盘的 uuid 81028e60-16e5-4145-aa6f-eaa3cfd37e18
+vim /etc/fstab 添加一行
+UUID=81028e60-16e5-4145-aa6f-eaa3cfd37e18 /data  ext4     defaults  0 0
+
+也可以设置在/etc/rc.local  用mount -t ext4 /dev/sdb /data  但是根据系统重启顺序 可能会影响一些命令失效 
+
+
 第二种方式
 2、进行分区，根据自己具体的未分区硬盘进行，下面以/dev/vdb为例进行分区（比如我要将这块硬盘分为两个区，一个区为32G用作swap缓冲，另外一个区为剩下所有空间，用于存数据）
 
