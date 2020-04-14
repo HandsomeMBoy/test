@@ -67,3 +67,52 @@ Linux系统的服务器，ssh远程登录服务器后，显示“-bash-4.1#”�
 　　root用户的正常shell是bash。 例如：/bin/bash
 　　cat /etc/passwd | grep root
   
+
+安装lnmp的环境步骤：
+https://www.cnblogs.com/dump/p/10329850.html 
+
+mysql安装稍微出了点问题：
+可能防火墙有点问题  没有开启80 和3306 端口无法连接和nginx和外链mysql
+网上查了资料处理步骤为：
+CentOS7开始，默认是没有iptables的，而是使用firewall防火墙。本文将屏蔽掉firewall，使用iptables
+1、停止并屏蔽firewalld服务
+停止 systemctl stop firewalld
+屏蔽 systemctl mask firewalld
+
+2、安装iptables-service软件包
+yum install iptables-services
+
+3、在引导时启用iptables服务
+systemctl enable iptables
+
+4、启动iptables服务
+systemctl start iptables
+
+5、保存防火墙规则
+service iptables save
+
+然后vim /etc/sysconfig/iptables 新增
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 3306 -j ACCEPT
+
+案例：
+ 1 # Firewall configuration written by system-config-firewall
+ 2 # Manual customization of this file is not recommended.
+ 3 *filter
+ 4 :INPUT ACCEPT [0:0]
+ 5 :FORWARD ACCEPT [0:0]
+ 6 :OUTPUT ACCEPT [0:0]
+ 7 -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+ 8 -A INPUT -p icmp -j ACCEPT
+ 9 -A INPUT -i lo -j ACCEPT
+10 -A INPUT -i eth0 -j ACCEPT
+11 -A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+12 -A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
+13 -A INPUT -m state --state NEW -m tcp -p tcp --dport 3306 -j ACCEPT
+14 -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+15 -A FORWARD -p icmp -j ACCEPT
+16 -A FORWARD -i lo -j ACCEPT
+17 -A FORWARD -i eth0 -j ACCEPT
+18 -A INPUT -j REJECT --reject-with icmp-host-prohibited
+19 -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+20 COMMIT
+
